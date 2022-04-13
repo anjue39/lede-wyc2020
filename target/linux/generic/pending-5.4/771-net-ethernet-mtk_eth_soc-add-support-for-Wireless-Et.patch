@@ -389,9 +389,9 @@ index 000000000..f0eacf819
 +		regmap_update_bits(hw->hifsys, HIFSYS_DMA_AG_MAP,
 +				   BIT(hw->index), BIT(hw->index));
 +
-+	if (!hw_list[!hw->index]->wed_dev &&
-+	    hw->eth->dma_dev != hw->eth->dev)
-+		mtk_eth_set_dma_device(hw->eth, hw->eth->dev);
++	
++	    
++
 +
 +	memset(dev, 0, sizeof(*dev));
 +	module_put(THIS_MODULE);
@@ -719,9 +719,9 @@ index 000000000..f0eacf819
 +	dev->irq = hw->irq;
 +	dev->wdma_idx = hw->index;
 +
-+	if (hw->eth->dma_dev == hw->eth->dev &&
-+	    of_dma_is_coherent(hw->eth->dev->of_node))
-+		mtk_eth_set_dma_device(hw->eth, hw->dev);
++
++
++
 +
 +	ret = mtk_wed_buffer_alloc(dev);
 +	if (ret) {
