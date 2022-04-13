@@ -1,3 +1,4 @@
+#include <linux/version.h>
 #include <linux/uaccess.h>
 #include <linux/trace_seq.h>
 #include <linux/seq_file.h>
@@ -533,21 +534,41 @@ static int igmp_open(struct inode *inode, struct file *file)
 	return single_open(file, igmp_show, 0);
 }
 
-
+#if LINUX_VERSION_CODE >= KERNEL_VERSION(5,10,0)
 static const struct proc_ops switch_count_fops = {
 	.proc_open = switch_count_open,
 	.proc_read = seq_read,
 	.proc_lseek = seq_lseek,
 	.proc_release = single_release
 };
+#else
+static const struct file_operations switch_count_fops = {
+	.owner = THIS_MODULE,
+	.open = switch_count_open,
+	.read = seq_read,
+	.llseek = seq_lseek,
+	.release = single_release
+};
+#endif
 
+#if LINUX_VERSION_CODE >= KERNEL_VERSION(5,10,0)
 static const struct proc_ops switch_vlan_fops = {
 	.proc_open = switch_vlan_open,
 	.proc_read = seq_read,
 	.proc_lseek = seq_lseek,
 	.proc_release = single_release
 };
+#else
+static const struct file_operations switch_vlan_fops = {
+	.owner = THIS_MODULE,
+	.open = switch_vlan_open,
+	.read = seq_read,
+	.llseek = seq_lseek,
+	.release = single_release
+};
+#endif
 
+#if LINUX_VERSION_CODE >= KERNEL_VERSION(5,10,0)
 static const struct proc_ops mac_tbl_fops = {
 	.proc_open = mac_tbl_open,
 	.proc_read = seq_read,
@@ -555,7 +576,18 @@ static const struct proc_ops mac_tbl_fops = {
 	.proc_write = mac_tbl_write,
 	.proc_release = single_release
 };
+#else
+static const struct file_operations mac_tbl_fops = {
+        .owner = THIS_MODULE,
+        .open = mac_tbl_open,
+        .read = seq_read,
+        .llseek = seq_lseek,
+        .write = mac_tbl_write,
+        .release = single_release
+};
+#endif
 
+#if LINUX_VERSION_CODE >= KERNEL_VERSION(5,10,0)
 static const struct proc_ops reg_fops = {
 	.proc_open = reg_open,
 	.proc_read = seq_read,
@@ -563,7 +595,18 @@ static const struct proc_ops reg_fops = {
 	.proc_write = reg_ops,
 	.proc_release = single_release
 };
+#else
+static const struct file_operations reg_fops = {
+        .owner = THIS_MODULE,
+        .open = reg_open,
+        .read = seq_read,
+        .llseek = seq_lseek,
+        .write = reg_ops,
+        .release = single_release
+};
+#endif
 
+#if LINUX_VERSION_CODE >= KERNEL_VERSION(5,10,0)
 static const struct proc_ops phyreg_fops = {
 	.proc_open = phyreg_open,
 	.proc_read = seq_read,
@@ -571,7 +614,18 @@ static const struct proc_ops phyreg_fops = {
 	.proc_write = phyreg_ops,
 	.proc_release = single_release
 };
+#else
+static const struct file_operations phyreg_fops = {
+        .owner = THIS_MODULE,
+        .open = phyreg_open,
+        .read = seq_read,
+        .llseek = seq_lseek,
+        .write = phyreg_ops,
+        .release = single_release
+};
+#endif
 
+#if LINUX_VERSION_CODE >= KERNEL_VERSION(5,10,0)
 static const struct proc_ops mirror_fops = {
 	.proc_open = mirror_open,
 	.proc_read = seq_read,
@@ -579,7 +633,18 @@ static const struct proc_ops mirror_fops = {
 	.proc_write = mirror_ops,
 	.proc_release = single_release
 };
+#else
+static const struct file_operations mirror_fops = {
+        .owner = THIS_MODULE,
+        .open = mirror_open,
+        .read = seq_read,
+        .llseek = seq_lseek,
+        .write = mirror_ops,
+        .release = single_release
+};
+#endif
 
+#if LINUX_VERSION_CODE >= KERNEL_VERSION(5,10,0)
 static const struct proc_ops igmp_fops = {
 	.proc_open = igmp_open,
 	.proc_read = seq_read,
@@ -587,6 +652,16 @@ static const struct proc_ops igmp_fops = {
 	.proc_write = igmp_ops,
 	.proc_release = single_release
 };
+#else
+static const struct file_operations igmp_fops = {
+        .owner = THIS_MODULE,
+        .open = igmp_open,
+        .read = seq_read,
+        .llseek = seq_lseek,
+        .write = igmp_ops,
+        .release = single_release
+};
+#endif
 
 int gsw_debug_proc_init(void)
 {

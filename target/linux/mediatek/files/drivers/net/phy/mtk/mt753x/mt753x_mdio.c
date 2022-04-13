@@ -268,8 +268,12 @@ static void mt753x_load_port_cfg(struct gsw_mt753x *gsw)
 		}
 
 		port_cfg->np = port_np;
-
+#if LINUX_VERSION_CODE >= KERNEL_VERSION(5,10,0)
 		if (of_get_phy_mode(port_np, &port_cfg->phy_mode) < 0) {
+#else
+		port_cfg->phy_mode = of_get_phy_mode(port_np);
+		if (port_cfg->phy_mode < 0) {
+#endif
 			dev_info(gsw->dev, "incorrect phy-mode %d\n", port);
 			continue;
 		}

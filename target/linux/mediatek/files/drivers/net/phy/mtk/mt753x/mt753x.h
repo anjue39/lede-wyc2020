@@ -6,7 +6,7 @@
 
 #ifndef _MT753X_H_
 #define _MT753X_H_
-
+#include <linux/version.h>
 #include <linux/list.h>
 #include <linux/mutex.h>
 #include <linux/netdevice.h>
@@ -35,7 +35,11 @@ enum mt753x_model {
 
 struct mt753x_port_cfg {
 	struct device_node *np;
+#if LINUX_VERSION_CODE >= KERNEL_VERSION(5,10,0)
 	phy_interface_t phy_mode;
+#else
+	int	phy_mode;
+#endif
 	u32 enabled: 1;
 	u32 force_link: 1;
 	u32 speed: 2;
