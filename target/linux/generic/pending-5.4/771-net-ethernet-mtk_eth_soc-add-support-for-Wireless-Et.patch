@@ -8,7 +8,7 @@ Subject: [PATCH] 1232
  drivers/net/ethernet/mediatek/Makefile        |   5 +
  drivers/net/ethernet/mediatek/mtk_eth_soc.c   |  17 +
  drivers/net/ethernet/mediatek/mtk_eth_soc.h   |   3 +
- drivers/net/ethernet/mediatek/mtk_wed.c       | 875 ++++++++++++++++++
+ drivers/net/ethernet/mediatek/mtk_wed.c       | 866 ++++++++++++++++++
  drivers/net/ethernet/mediatek/mtk_wed.h       | 128 +++
  .../net/ethernet/mediatek/mtk_wed_debugfs.c   | 175 ++++
  drivers/net/ethernet/mediatek/mtk_wed_ops.c   |   8 +
@@ -104,7 +104,7 @@ new file mode 100644
 index 000000000..f0eacf819
 --- /dev/null
 +++ b/drivers/net/ethernet/mediatek/mtk_wed.c
-@@ -0,0 +1,875 @@
+@@ -0,0 +1,866 @@
 +// SPDX-License-Identifier: GPL-2.0-only
 +/* Copyright (C) 2021 Felix Fietkau <nbd@nbd.name> */
 +
@@ -114,6 +114,7 @@ index 000000000..f0eacf819
 +#include <linux/bitfield.h>
 +#include <linux/dma-mapping.h>
 +#include <linux/skbuff.h>
++#include <linux/iopoll.h>
 +#include <linux/of_platform.h>
 +#include <linux/of_address.h>
 +#include <linux/mfd/syscon.h>
@@ -388,11 +389,6 @@ index 000000000..f0eacf819
 +	if (of_dma_is_coherent(wlan_node))
 +		regmap_update_bits(hw->hifsys, HIFSYS_DMA_AG_MAP,
 +				   BIT(hw->index), BIT(hw->index));
-+
-+	
-+	    
-+
-+
 +	memset(dev, 0, sizeof(*dev));
 +	module_put(THIS_MODULE);
 +
@@ -718,11 +714,6 @@ index 000000000..f0eacf819
 +	dev->dev = hw->dev;
 +	dev->irq = hw->irq;
 +	dev->wdma_idx = hw->index;
-+
-+
-+
-+
-+
 +	ret = mtk_wed_buffer_alloc(dev);
 +	if (ret) {
 +		mtk_wed_detach(dev);
