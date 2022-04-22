@@ -578,7 +578,7 @@ sub install_src {
 		$dep =~ s/^.+://;
 		$dep =~ s/\/.+$//;
 		next unless $dep;
-		install_src($feed, $dep, 0) == 0 or $ret = 1;
+		install_src($feed, $dep, $force) == 0 or $ret = 1;
 	}
 
 	foreach my $pkg (@{$src->{packages}}) {

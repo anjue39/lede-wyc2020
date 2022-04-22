@@ -1342,3 +1342,37 @@ native Linux tools such as ss.
 endef
 
 $(eval $(call KernelPackage,inet-diag))
+
+define KernelPackage/native-batman-adv
+  SUBMENU:=$(NETWORK_SUPPORT_MENU)
+  TITLE:=B.A.T.M.A.N. Basic Module
+  DEPENDS:=+kmod-lib-crc32c
+  KCONFIG:= \
+	CONFIG_BATMAN_ADV \
+	CONFIG_BATMAN_ADV_BATMAN_V=y \
+	CONFIG_BATMAN_ADV_BLA=y \
+	CONFIG_BATMAN_ADV_DAT=y \
+	CONFIG_BATMAN_ADV_NC =n \
+	CONFIG_BATMAN_ADV_MCAST=y \
+	CONFIG_BATMAN_ADV_DEBUG=n \
+	CONFIG_BATMAN_ADV_TRACING=n \
+	CONFIG_BATMAN_ADV_SYSFS =n
+  FILES:= \
+	$(LINUX_DIR)/net/batman-adv/batman-adv.ko
+	
+   AUTOLOAD:=$(call AutoProbe,batman-adv)
+endef
+
+define KernelPackage/native-batman-adv/description
+	  B.A.T.M.A.N. (better approach to mobile ad-hoc networking) is
+	  a routing protocol for multi-hop ad-hoc mesh networks. The
+	  networks may be wired or wireless.
+endef
+
+$(eval $(call KernelPackage,native-batman-adv))
+
+
+
+
+
+
