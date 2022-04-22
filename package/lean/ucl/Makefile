@@ -22,16 +22,9 @@ PKG_FIXUP:=autoreconf
 PKG_BUILD_PARALLEL:=1
 PKG_INSTALL:=1
 
-HOST_FIXUP:=autoreconf
-HOST_BUILD_PARALLEL:=1
-
-include $(INCLUDE_DIR)/host-build.mk
 include $(INCLUDE_DIR)/package.mk
 
-HOST_BUILD_PREFIX:=$(STAGING_DIR_HOST)
-
-HOST_CFLAGS += -std=gnu89
-TARGET_CFLAGS += -std=gnu89
+TARGET_CFLAGS += -std=gnu89 -std=c90 -fPIC -Wno-error=implicit-function-declaration
 
 CONFIGURE_ARGS += \
 	--enable-static \
@@ -65,5 +58,4 @@ define Package/libucl/install
 	$(CP) $(PKG_INSTALL_DIR)/usr/lib/libucl.so.* $(1)/usr/lib/
 endef
 
-$(eval $(call HostBuild))
 $(eval $(call BuildPackage,libucl))
