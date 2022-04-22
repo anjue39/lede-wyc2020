@@ -19,25 +19,7 @@ PKG_SOURCE_VERSION:=a46b63817a9c6ad5af7cf519332e859f11558592
 PKG_SOURCE_URL:=https://github.com/upx/upx.git
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_SOURCE_DATE).tar.gz
 
-HOST_BUILD_DEPENDS:=ucl/host
-
-include $(INCLUDE_DIR)/host-build.mk
 include $(INCLUDE_DIR)/package.mk
-
-define Host/Compile
-	UPX_UCLDIR=$(STAGING_DIR_HOST) \
-	$(MAKE) -C $(HOST_BUILD_DIR)/src \
-		CXXFLAGS_WERROR="" LDFLAGS="$(HOST_LDFLAGS)" \
-		CXX="$(HOSTCXX)"
-endef
-
-define Host/Install
-	$(CP) $(HOST_BUILD_DIR)/src/upx.out $(STAGING_DIR_HOST)/bin/upx
-endef
-
-define Host/Clean
-	rm -f $(STAGING_DIR_HOST)/bin/upx
-endef
 
 define Package/upx
   SECTION:=utils
@@ -62,5 +44,4 @@ define Package/upx/install
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/src/upx.out $(1)/usr/bin/upx
 endef
 
-$(eval $(call HostBuild))
 $(eval $(call BuildPackage,upx))
