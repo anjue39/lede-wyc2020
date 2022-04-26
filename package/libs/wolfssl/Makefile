@@ -126,10 +126,7 @@ endif
 WOLFSSL_AARCH64_NO_CRYPTO = \
 	$(CONFIG_TARGET_bcm27xx)
 
-ifneq ($(CONFIG_aarch64),$(strip $(WOLFSSL_AARCH64_NO_CRYPTO)))
-	CONFIGURE_ARGS += --enable-armasm
-	TARGET_CFLAGS:=$(TARGET_CFLAGS:-mcpu%=-mcpu%+crypto)
-else ifeq ($(CONFIG_TARGET_x86_64),y)
+ifeq ($(CONFIG_TARGET_x86_64),y)
 	CONFIGURE_ARGS += --enable-intelasm
 endif
 
